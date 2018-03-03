@@ -1,0 +1,37 @@
+CDF ID: 
+
+Total: /75
+- (score/75 + bonus/15) * (1 - 0.1 * late_days) where score=,bonus=0,late_days=0
+
+Task 1: Preprocessing (auto tester):  /5
+
+- Failed test cases:
+
+
+Task 2: Training the Language Model /15
+
+- Auto tester: /5
+- General correctness of the code: 10/10
+- Comment: 
+
+Task 3: Computing Log-likelihoods /20
+
+- Auto tester: /5
+- General correctness of the code: /5
+- Report: /10 (perplexities for F and E, trends, the effect of delta on perplexity in terms of probability given to unseen events, pattern for MLE perplexity, and overall clarity) 
+- Comment (code): 
+- Comment (report): 
+
+Task 4: Alignment Model /25
+
+- Initialization:  /4
+- Alignment calculation: /6
+- General correctness of the code: /15
+- Comment: 
+
+Task 5: Evaluation /10
+- General correctness of the code: /5 (calculating BLEU as described)
+- Report: /5
+  - Discussion: /3 (trends, and goodness of evaluation measure such as word order)
+  - Results: /2
+
