@@ -33,5 +33,20 @@ class TestPreprocess(unittest.TestCase):
     def test_regex2(self):
         self.assertEqual(preprocess.preprocess("Hon. Jim Peterson (Secretary of State (International Financial Institutions), Lib.):", "e"), "Hon. Jim Peterson ( Secretary of State ( International Financial Institutions ) , Lib. ) :")
 
+    def test_french1(self):
+        self.assertEqual(preprocess.preprocess("(Les deputes recoivent leur bulletin de vote, qu'ils remplissent en secret dans les isoloirs.)  ", "f"), "( Les deputes recoivent leur bulletin de vote , qu ' ils remplissent en secret dans les isoloirs. )")
+
+    def test_empty(self):
+        self.assertEqual(preprocess.preprocess("", "f"), "")
+
+    def test_french_end(self):
+        self.assertEqual(preprocess.preprocess("j'ai", "f"), "j ' ai")
+
+    def test_french2(self):
+        self.assertEqual(preprocess.preprocess("he d'ailleurs", "f"), "he d'ailleurs")
+
+    def test_french3(self):
+        self.assertEqual(preprocess.preprocess("puisqu'on bleh", "f"), "puisqu ' on bleh")
+
 if __name__ == '__main__':
     unittest.main()

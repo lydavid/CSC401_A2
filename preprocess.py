@@ -3,6 +3,7 @@ import string
 
 sentence_ending_puncts = [".", "!", "?"]
 other_puncts = [",", ":", ";", "(", ")", "+", "-", "<", ">", "=", "'", '"']
+special_d_words = ["d'abord", "d'accord", "d'ailleurs", "d'habitude"]
 
 def preprocess(in_sentence, language):
     """ 
@@ -19,6 +20,10 @@ def preprocess(in_sentence, language):
 	out_sentence: (string) the modified sentence
     """
     # TODO: Implement Function
+
+    # if sentence is empty, return
+    if not in_sentence:
+        return ""
     
     # first let's strip any trailing whitespaces
     out_sentence = in_sentence.strip()
@@ -52,13 +57,41 @@ def preprocess(in_sentence, language):
 
     # convert to tokens then back to remove extra whitespaces in the string
     tokens = out_sentence.split()
-    out_sentence = tokens[0]
+    
 
+    # now handle french cases
+    # Plan: find all instances of ', if the token is not d'abord, d'accord, d'ailleurs, d'habitude:
+        # split that token on it
+        # if the first half is a single char or is qu, we will separate this token
+        # else if the second half is on or il, we will separate this token
+    if language == "f":
+
+        for i in range(len(tokens)):
+            if "'" in tokens[i]:
+                if tokens[i] not in special_d_words:
+
+                    halfs = tokens[i].split("'")
+                    if len(halfs[0]) == 1 or halfs[0] == "qu" or halfs[1] in ["on", "il"]:
+                        tokens.pop(i)
+                        tokens.insert(i, halfs[0])
+
+                        # make sure we don't run off the list
+                        if i < len(tokens):
+                            tokens.insert(i + 1, "'")
+                        else:
+                            tokens.append("'")
+
+                        if i < len(tokens) - 1:
+                            tokens.insert(i + 2, halfs[1])
+                        else:
+                            tokens.append(halfs[1])        
+
+    out_sentence = tokens[0]
+    
     # ensure we don't run into out of index error
     if len(tokens) > 1:
         for i in range(1, len(tokens)):
             out_sentence += " " + tokens[i]
-    
 
 
     return out_sentence
