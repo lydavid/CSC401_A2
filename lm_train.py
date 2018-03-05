@@ -28,6 +28,32 @@ def lm_train(data_dir, language, fn_LM):
 	
 	# TODO: Implement Function
 
+    language_model = {"uni" : {}, "bi" : {}}
+
+    for filename in os.listdir(data_dir):
+        if filename.endswith("." + language):
+            #print(filename)
+            with open(os.path.join(data_dir, filename), "r") as file:
+                for line in file:
+                    # pass it through preprocessing
+                    preprocessed_line = preprocess(line, language)
+                    #print(preprocessed_line)
+
+                    # split into tokens
+                    tokens = preprocessed_line.split()
+
+                    # each token will be added to uni, incrementing its respective count or making a new entry if it does not exist
+
+                    # each pair of adjacent token will be added to bi, in order
+
+                    # for i == 0 and i == len(tokens) - 1, SENTSTART and SENTEND will be paired with the first and last token respectively
+                    # they will also be incremented in uni
+
+                    
+
+                
+        
+
     #Save Model
     with open(fn_LM+'.pickle', 'wb') as handle:
         pickle.dump(language_model, handle, protocol=pickle.HIGHEST_PROTOCOL)
