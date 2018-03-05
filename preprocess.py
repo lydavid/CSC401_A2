@@ -5,6 +5,9 @@ sentence_ending_puncts = [".", "!", "?"]
 other_puncts = [",", ":", ";", "(", ")", "+", "-", "<", ">", "=", "'", '"']
 special_d_words = ["d'abord", "d'accord", "d'ailleurs", "d'habitude"]
 
+SENTSTART = "SENTSTART"
+SENEND = "SENEND"
+
 def preprocess(in_sentence, language):
     """ 
     This function preprocesses the input text according to language-specific rules.
@@ -86,12 +89,12 @@ def preprocess(in_sentence, language):
                         else:
                             tokens.append(halfs[1])        
 
-    out_sentence = tokens[0]
-    
+    out_sentence = SENTSTART
+
     # ensure we don't run into out of index error
     if len(tokens) > 1:
-        for i in range(1, len(tokens)):
+        for i in range(len(tokens)):
             out_sentence += " " + tokens[i]
-
+    out_sentence += " " + SENEND
 
     return out_sentence

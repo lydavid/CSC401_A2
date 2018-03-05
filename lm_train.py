@@ -2,6 +2,9 @@ from preprocess import *
 import pickle
 import os
 
+SENTSTART = "<s>"
+SENTEND = "<\s>"
+
 def lm_train(data_dir, language, fn_LM):
     """
 	This function reads data from data_dir, computes unigram and bigram counts,
@@ -32,30 +35,42 @@ def lm_train(data_dir, language, fn_LM):
 
     for filename in os.listdir(data_dir):
         if filename.endswith("." + language):
-            #print(filename)
+
             with open(os.path.join(data_dir, filename), "r") as file:
+
                 for line in file:
+
                     # pass it through preprocessing
                     preprocessed_line = preprocess(line, language)
-                    #print(preprocessed_line)
 
                     # split into tokens
                     tokens = preprocessed_line.split()
 
                     # each token will be added to uni, incrementing its respective count or making a new entry if it does not exist
-
                     # each pair of adjacent token will be added to bi, in order
+                    for i in range(len(tokens)):
 
-                    # for i == 0 and i == len(tokens) - 1, SENTSTART and SENTEND will be paired with the first and last token respectively
-                    # they will also be incremented in uni
+                        token = tokens[i]
+                        if token not in language_model["uni"]:
+                            language_model["uni"][token] = 1
+                        else:
+                            language_model["uni"][token] += 1
 
-                    
+                        # if it's not the last token, we can count it along with the subsequent token as a pair
+                        if i < len(tokens) - 1:
 
-                
-        
+                            next_token = tokens[i + 1]
+
+                            if token not in language_model["bi"]:
+                                language_model["bi"][token] = {}
+
+                            if next_token not in language_model["bi"][token]:
+                                language_model["bi"][token][next_token] = 1
+                            else:
+                                language_model["bi"][token][next_token] += 1
 
     #Save Model
     with open(fn_LM+'.pickle', 'wb') as handle:
         pickle.dump(language_model, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        
+
     return language_model
