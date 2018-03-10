@@ -6,7 +6,7 @@ other_puncts = [",", ":", ";", "(", ")", "+", "-", "<", ">", "=", "'", '"']
 special_d_words = ["d'abord", "d'accord", "d'ailleurs", "d'habitude"]
 
 SENTSTART = "SENTSTART"
-SENEND = "SENEND"
+SENTEND = "SENTEND"
 
 def preprocess(in_sentence, language):
     """ 
@@ -94,7 +94,7 @@ def preprocess(in_sentence, language):
     # ensure we don't run into out of index error
     if len(tokens) > 1:
         for i in range(len(tokens)):
-            out_sentence += " " + tokens[i]
-    out_sentence += " " + SENEND
+            out_sentence += " " + tokens[i].lower()
+    out_sentence += " " + SENTEND
 
     return out_sentence
