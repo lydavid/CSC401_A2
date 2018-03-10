@@ -2,8 +2,8 @@ from preprocess import *
 import pickle
 import os
 
-SENTSTART = "<s>"
-SENTEND = "<\s>"
+SENTSTART = "SENTSTART"
+SENTEND = "SENTEND"
 
 def lm_train(data_dir, language, fn_LM):
     """
