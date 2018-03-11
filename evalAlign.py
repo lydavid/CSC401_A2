@@ -3,14 +3,14 @@ from decode import *
 from preprocess import *
 import pickle
 
-french_path = "/u/cs401/A2_SMT/data/Hansard/Testing/Task5.f"
-#french_path = "A2_SMT/data/Hansard/Testing/Task5.f"
+#french_path = "/u/cs401/A2_SMT/data/Hansard/Testing/Task5.f"
+french_path = "A2_SMT/data/Hansard/Testing/Task5.f"
 
-human_ref = "/u/cs401/A2_SMT/data/Hansard/Testing/Task5.e"
-#human_ref = "A2_SMT/data/Hansard/Testing/Task5.e"
+#human_ref = "/u/cs401/A2_SMT/data/Hansard/Testing/Task5.e"
+human_ref = "A2_SMT/data/Hansard/Testing/Task5.e"
 
-google_ref = "/u/cs401/A2_SMT/data/Hansard/Testing/Task5.google.e"
-#google_ref = "A2_SMT/data/Hansard/Testing/Task5.google.e"
+#google_ref = "/u/cs401/A2_SMT/data/Hansard/Testing/Task5.google.e"
+google_ref = "A2_SMT/data/Hansard/Testing/Task5.google.e"
 
 LM_path = "english.pickle"
 AM_path = "am.pickle"
