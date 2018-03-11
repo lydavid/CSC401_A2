@@ -6,8 +6,8 @@ from perplexity import *
 english_training_corpus_file = "english.pickle"
 french_training_corpus_file = "french.pickle"
 
-#test_dir = "/u/cs401/A2_SMT/data/Hansard/Testing/"
-test_dir = "A2_SMT/data/Hansard/Testing/"
+test_dir = "/u/cs401/A2_SMT/data/Hansard/Testing/"
+#test_dir = "A2_SMT/data/Hansard/Testing/"
 
 def main():
 
@@ -43,7 +43,7 @@ def main():
 
     # add-delta
     for i in range(0, 21):
-        delta = i * 0.005
+        delta = i * 0.05
         #print("delta %2f" % delta, flush=True)
         print("delta %.2f: %.2f" % (delta, preplexity(e_LM, test_dir, "e", smoothing=True, delta=delta)), flush=True)
 
@@ -55,10 +55,10 @@ def main():
 
     # add-delta
     for i in range(0, 21):
-        delta = i * 0.005
+        delta = i * 0.05
         print("delta %.2f: %.2f" % (delta, preplexity(f_LM, test_dir, "f", smoothing=True, delta=delta)), flush=True)
         #print(round(, flush=True), 2)
 
 
 if __name__ == "__main__":
-	main()
+    main()
