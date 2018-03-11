@@ -6,6 +6,9 @@ import os
 import pickle
 import glob
 
+SENTSTART = "SENTSTART"
+SENTEND = "SENTEND"
+
 def align_ibm1(train_dir, num_sentences, max_iter, fn_AM):
     """
 	Implements the training of IBM-1 word alignment algoirthm. 
@@ -32,11 +35,18 @@ def align_ibm1(train_dir, num_sentences, max_iter, fn_AM):
     # we will have this return a 2D list of form [[1.e.1, 1.e.2, ...], [1.f.1, 1.f.2, ...]]
     # 1.e.2 is sentence 2 of file 1.e, the same index between the two sublists represents alignment of the sentences
     aligned_sentences = read_hansard(train_dir, num_sentences)
+    #print(aligned_sentences)
 
-    print(aligned_sentences)
     # Initialize AM uniformly
-
+    # let's just pass in this list of list and have initialize handle everything
+    AM = initialize(aligned_sentences)
     
+    # manually insert SENTSTART/SENTEND
+    AM[SENTSTART] = {}
+    AM[SENTSTART][SENTSTART] = 1
+    AM[SENTEND] = {}
+    AM[SENTEND][SENTEND] = 1
+
     # Iterate between E and M steps
 
     
@@ -102,12 +112,48 @@ def read_hansard(train_dir, num_sentences):
     return aligned_sentences
 
 
-def initialize(eng, fre):
+def initialize(aligned_sentences):
     """
 	Initialize alignment model uniformly.
 	Only set non-zero probabilities where word pairs appear in corresponding sentences.
+
+    INPUTS:
+    aligned_sentences : (list of list of string)
 	"""
-	# TODO
+
+    initialized_AM = {}
+
+    eng_sentences = aligned_sentences[0]
+    fre_sentences = aligned_sentences[1]
+
+    # iterate over eng_sentences
+    # build a dictionary with eng word as keys and a set of fre words as values
+    # {"house" : set(["maison", "la", "bleu"]), ...}
+    eng_word_to_occurence_with_fre_words = {}
+
+    for i in range(len(eng_sentences)):
+        eng_tokens = eng_sentences[i].split()
+        eng_tokens = eng_tokens[1:-1]  # Remove SENTSTART/SENTEND
+
+        fre_tokens = fre_sentences[i].split()
+        fre_tokens = fre_tokens[1:-1]
+
+        # for each English token, if it's not in our dict, add it with an empty set as its value
+        # union to its set a set of all French tokens in this sentence
+        for eng_token in eng_tokens:
+            if eng_token not in eng_word_to_occurence_with_fre_words:
+                eng_word_to_occurence_with_fre_words[eng_token] = set()
+            eng_word_to_occurence_with_fre_words[eng_token] |= set(fre_tokens)
+
+    # now build our initialized AM with a uniform probability distribution
+    for eng_word in eng_word_to_occurence_with_fre_words.keys():
+        num_words_occurences = len(eng_word_to_occurence_with_fre_words[eng_word])  # number of fre words it occurred with
+        initialized_AM[eng_word] = {}
+        for fre_word in eng_word_to_occurence_with_fre_words[eng_word]:
+            initialized_AM[eng_word][fre_word] = 1.0 / num_words_occurences
+
+    return initialized_AM
+	
     
 def em_step(t, eng, fre):
     """
