@@ -35,7 +35,6 @@ def align_ibm1(train_dir, num_sentences, max_iter, fn_AM):
     # we will have this return a 2D list of form [[1.e.1, 1.e.2, ...], [1.f.1, 1.f.2, ...]]
     # 1.e.2 is sentence 2 of file 1.e, the same index between the two sublists represents alignment of the sentences
     aligned_sentences = read_hansard(train_dir, num_sentences)
-    #print(aligned_sentences)
 
     # Initialize AM uniformly
     # let's just pass in this list of list and have initialize handle everything
@@ -53,6 +52,14 @@ def align_ibm1(train_dir, num_sentences, max_iter, fn_AM):
     fre_sentences = aligned_sentences[1]
     for i in range(max_iter):
         em_step(AM, eng_sentences, fre_sentences)  # pass AM to function and have it modify it directly!
+
+    #Save Model
+    with open(fn_AM+'.pickle', 'wb') as handle:
+        pickle.dump(AM, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    with open("align.txt", "w+") as file:
+        print(AM, file=file)
+
 
     return AM
     
@@ -170,20 +177,7 @@ def em_step(t, eng, fre):
 	Follows the pseudo-code given in the tutorial slides.
 	"""
 
-
-    # t refers to model parameters, contents of AM
-    # In this sense, AM is essentially the t distribution from class, e.g.,
-    # >> AM[‘bird’][‘oiseau’] = 0.8   % t(oiseau|bird) = 0.8
-
-    # since we are running the EM algorithm 5-25 times, what is the thing that changes between iterations?
-    # from the tut slides, each iter seems to narrow down on alignment of eng to fre words...
-    # looks like we can modify the AM itself in the Maximize step
-    # which we then use in each iteration for the Expectation step
-
     # Initialization already handled outside this function
-
-    #eng_words = tokenize_and_clean(eng)
-    #fre_words = tokenize_and_clean(fre)
 
     t_count = {}
     total = {}
@@ -212,11 +206,8 @@ def em_step(t, eng, fre):
                     total[fre_word] = 0
                 total[fre_word] += (t[eng_word][fre_word] * eng_words.count(eng_word) * fre_words.count(fre_word)) / denom_c
 
-        #print(t_count)
-        #print(total)
-
     # Maximization step
     for fre_word in total:
         for eng_word in t_count:
-            if fre_word in t_count[eng_word]:
+            if fre_word in t_count[eng_word]:  # making sure we only account for fre_words seen together with eng_word
                 t[eng_word][fre_word] = t_count[eng_word][fre_word] / total[fre_word]
