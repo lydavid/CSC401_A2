@@ -1,0 +1,61 @@
+Perplexity Values
+
+English
+MLE: 13.17
+delta 0.05: 52.67
+delta 0.10: 61.62
+delta 0.15: 68.81
+delta 0.20: 75.05
+delta 0.25: 80.67
+delta 0.30: 85.86
+delta 0.35: 90.71
+delta 0.40: 95.30
+delta 0.45: 99.66
+delta 0.50: 103.85
+delta 0.55: 107.88
+delta 0.60: 111.77
+delta 0.65: 115.55
+delta 0.70: 119.22
+delta 0.75: 122.79
+delta 0.80: 126.28
+delta 0.85: 129.69
+delta 0.90: 133.03
+delta 0.95: 136.30
+delta 1.00: 139.52
+
+French
+MLE: 12.65
+delta 0.05: 48.82
+delta 0.10: 57.88
+delta 0.15: 65.12
+delta 0.20: 71.41
+delta 0.25: 77.08
+delta 0.30: 82.33
+delta 0.35: 87.26
+delta 0.40: 91.93
+delta 0.45: 96.39
+delta 0.50: 100.68
+delta 0.55: 104.81
+delta 0.60: 108.82
+delta 0.65: 112.71
+delta 0.70: 116.50
+delta 0.75: 120.21
+delta 0.80: 123.83
+delta 0.85: 127.38
+delta 0.90: 130.85
+delta 0.95: 134.27
+delta 1.00: 137.63
+
+
+Discussion
+The perplexity values for the MLE of English and French were both similar around 12-13.
+I tried increments of 0.05 for delta for both languages from 0.05 to 1.00,
+which gave me perplexity values ranging from 52.67 to 139.52 for English and
+48.82 to 137.63 for French. I chose these values because I thought small increments may give us a
+better sense of the change between deltas and wished to covered from close to 0 (MLE) to 1.
+I noticed that in both language models, as the delta increases, so does the perplexity value.
+Since a lower perplexity value indicates that probability model is better at predicting a sample,
+we saw that in the case of our data, the MLE model is actually better than the add-delta ones and
+lower deltas served as a better predictor for both English and French.
+One more thing we noticed was that at all deltas and even for MLE, the French model always gave
+a smaller perplexity value, meaning perhaps our training data is better for French than English.

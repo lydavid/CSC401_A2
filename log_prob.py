@@ -24,7 +24,11 @@ def word_prob(word, context, LM, smoothing=False, delta=0, vocabSize=0):
 
     # separate our calculations in case of erroneous inputs of smoothing=False, delta=n, n!=0
     if smoothing:
-        word_prob = log( (word_with_context_count + delta) / float(word_count + delta * vocabSize), 2)
+        # need this here as well or else we may run into math domain error because of log(0)
+        if (word_count == 0 or word_with_context_count == 0):
+            return float("-inf")
+        else:
+            word_prob = log( (word_with_context_count + delta) / float(word_count + (delta * vocabSize)), 2)
     else:
         # MLE
         if (word_count == 0 or word_with_context_count == 0):
@@ -52,7 +56,6 @@ def log_prob(sentence, LM, smoothing=False, delta=0, vocabSize=0):
 	"""
 	
 	#TODO: Implement by student.
-    print(sentence)
 
     # those formulas given in handout allows us to compute the prob of current word given previous word
     # for this task, we must do that for each word and return the log prob of the entire sentence
