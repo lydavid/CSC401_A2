@@ -24,13 +24,13 @@ def word_prob(word, context, LM, smoothing=False, delta=0, vocabSize=0):
 
     # separate our calculations in case of erroneous inputs of smoothing=False, delta=n, n!=0
     if smoothing:
-        word_prob = log(word_with_context_count + delta, 2) / float(word_count + delta * vocabSize)
+        word_prob = log( (word_with_context_count + delta) / float(word_count + delta * vocabSize), 2)
     else:
         # MLE
         if (word_count == 0 or word_with_context_count == 0):
-            return 0
+            return float("-inf")
         else:
-            word_prob = log(word_with_context_count, 2) / float(word_count)
+            word_prob = log( (word_with_context_count) / float(word_count), 2)
 
     return word_prob
 
@@ -56,12 +56,8 @@ def log_prob(sentence, LM, smoothing=False, delta=0, vocabSize=0):
 
     # those formulas given in handout allows us to compute the prob of current word given previous word
     # for this task, we must do that for each word and return the log prob of the entire sentence
-    if (smoothing):
-        print("add-delta")
-    else:
-        print("mle")
 
-    # add rather then multiply for log probabilities (normal probabilities is multiply)
+    # add rather than multiply for log probabilities (normal probabilities is multiply)
     log_prob = 0  # starting prob, will work cause we are multiplying a bunch of probs < 1
     # compute word_prob for each pair of adjacent tokens and multiply their results together
     tokens = sentence.split()  # from our preprocess, we can split on spaces

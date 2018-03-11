@@ -15,9 +15,9 @@ def main():
     print(vocab_size)
 
     #print(LM)
-    #sent = preprocess.preprocess("The Presiding Officer (Mr. Caccia) ", "e")
+    sent = preprocess.preprocess("The Presiding Officer (Mr. Caccia) ", "e")
     #sent = preprocess.preprocess("The Clerk of the House:", "e")
-    sent = preprocess.preprocess("clerk the house", "e")
+    #sent = preprocess.preprocess("clerk the house", "e")
     print(log_prob.log_prob(sent, LM, smoothing=False))#, delta=0.01, vocabSize=vocab_size))
 
 if __name__ == "__main__":
